@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Factories;
 
 use App\Repositories\ConfigurationJsonRepository;
 use PhpCsFixer\Config;
-use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
@@ -42,7 +43,7 @@ class ConfigurationFactory
      */
     public static function preset($rules): \PhpCsFixer\ConfigInterface
     {
-        return (new Config)
+        return (new Config())
             ->setParallelConfig(ParallelConfigFactory::detect())
             ->setFinder(self::finder())
             ->setRules(array_merge($rules, resolve(ConfigurationJsonRepository::class)->rules()))

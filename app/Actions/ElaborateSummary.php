@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\Factories\ConfigurationResolverFactory;
@@ -28,7 +30,7 @@ class ElaborateSummary
         protected $output,
         protected $summaryOutput,
     ) {
-        //
+
     }
 
     /**
@@ -84,12 +86,12 @@ class ElaborateSummary
     {
         $reporter = match ($format) {
             'agent' => new AgentReporter($this->errors),
-            'checkstyle' => new FixReport\CheckstyleReporter,
-            'gitlab' => new FixReport\GitlabReporter,
-            'json' => new FixReport\JsonReporter,
-            'junit' => new FixReport\JunitReporter,
-            'txt' => new FixReport\TextReporter,
-            'xml' => new FixReport\XmlReporter,
+            'checkstyle' => new FixReport\CheckstyleReporter(),
+            'gitlab' => new FixReport\GitlabReporter(),
+            'json' => new FixReport\JsonReporter(),
+            'junit' => new FixReport\JunitReporter(),
+            'txt' => new FixReport\TextReporter(),
+            'xml' => new FixReport\XmlReporter(),
             default => abort(1, sprintf('Format [%s] is not supported.', $format)),
         };
 

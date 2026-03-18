@@ -1,3 +1,5 @@
 <?php
 
-$a = new stdClass;
+declare(strict_types=1);
+
+$a = new stdClass();

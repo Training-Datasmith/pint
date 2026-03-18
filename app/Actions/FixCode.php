@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\Factories\ConfigurationResolverFactory;
@@ -32,7 +34,7 @@ class FixCode
         protected $output,
         protected $progress,
     ) {
-        //
+
     }
 
     /**

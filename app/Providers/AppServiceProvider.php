@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+
     }
 
     /**
@@ -21,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(ErrorsManager::class, fn() => new ErrorsManager);
+        $this->app->singleton(ErrorsManager::class, fn () => new ErrorsManager());
 
-        $this->app->singleton(EventDispatcher::class, fn() => new EventDispatcher);
+        $this->app->singleton(EventDispatcher::class, fn () => new EventDispatcher());
     }
 }

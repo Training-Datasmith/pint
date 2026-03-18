@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Output;
 
 use App\Output\Concerns\InteractsWithSymbols;
@@ -119,6 +121,6 @@ class SummaryOutput
                     'source' => $error->getSource(),
                 ],
             )),
-        )->sort(fn($issueA, $issueB) => $issueA <=> $issueB)->values();
+        )->sort(fn ($issueA, $issueB) => $issueA <=> $issueB)->values();
     }
 }

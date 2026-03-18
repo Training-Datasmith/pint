@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Fixers\TypeAnnotationsOnlyFixer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 beforeEach(function () {
-    $this->fixer = new TypeAnnotationsOnlyFixer;
+    $this->fixer = new TypeAnnotationsOnlyFixer();
 });
 
 function fixCode(TypeAnnotationsOnlyFixer $fixer, string $code, ?string $filePath = null): string
@@ -2012,7 +2014,7 @@ it('skips files in the config directory', function (string $filePath) {
     ];
     PHP;
 
-    $fixer = new TypeAnnotationsOnlyFixer;
+    $fixer = new TypeAnnotationsOnlyFixer();
 
     expect($fixer->supports(new SplFileInfo($filePath)))->toBeFalse();
     expect(fixCode($fixer, $code, $filePath))->toBe($code);
@@ -2023,7 +2025,7 @@ it('skips files in the config directory', function (string $filePath) {
 ]);
 
 it('does not skip files outside the config directory', function (string $filePath) {
-    $fixer = new TypeAnnotationsOnlyFixer;
+    $fixer = new TypeAnnotationsOnlyFixer();
 
     expect($fixer->supports(new SplFileInfo($filePath)))->toBeTrue();
 })->with([

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Output;
 
 use App\Output\Concerns\InteractsWithSymbols;
@@ -37,7 +39,7 @@ class ProgressOutput
         protected $input,
         protected $output,
     ) {
-        $this->symbolsPerLine = (new Terminal)->getWidth() - 4;
+        $this->symbolsPerLine = (new Terminal())->getWidth() - 4;
     }
 
     /**
@@ -65,7 +67,7 @@ class ProgressOutput
     {
         $symbolsOnCurrentLine = $this->processed % $this->symbolsPerLine;
 
-        if ($symbolsOnCurrentLine >= (new Terminal)->getWidth() - 4) {
+        if ($symbolsOnCurrentLine >= (new Terminal())->getWidth() - 4) {
             $symbolsOnCurrentLine = 0;
         }
 

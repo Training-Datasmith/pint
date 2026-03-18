@@ -46,7 +46,7 @@ final class FixerFactory
 
     public function __construct()
     {
-        $this->nameValidator = new FixerNameValidator;
+        $this->nameValidator = new FixerNameValidator();
     }
 
     public function setWhitespacesConfig(WhitespacesFixerConfig $config): self
@@ -97,12 +97,12 @@ final class FixerFactory
 
         foreach ($builtInFixers as $class) {
             /** @var FixerInterface */
-            $fixer = new $class;
+            $fixer = new $class();
             $this->registerFixer($fixer, false);
         }
 
         $this->registerCustomFixers([
-            new TypeAnnotationsOnlyFixer,
+            new TypeAnnotationsOnlyFixer(),
         ]);
 
         return $this;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Process;
 
 it('formats code from stdin', function (string $input, ?string $expected) {

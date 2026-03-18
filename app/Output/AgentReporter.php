@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Output;
 
 use App\Project;
@@ -16,7 +18,7 @@ final class AgentReporter implements ReporterInterface
     public function __construct(
         protected ?ErrorsManager $errors = null,
     ) {
-        //
+
     }
 
     /**

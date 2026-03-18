@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $file = \Pest\testDirectory('test-output');
 
 it('outputs checkstyle format to file and pretty print in cli', function () use ($file) {

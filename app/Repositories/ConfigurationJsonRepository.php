@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 class ConfigurationJsonRepository
@@ -23,7 +25,7 @@ class ConfigurationJsonRepository
      */
     public function __construct(protected $path, protected $preset)
     {
-        //
+
     }
 
     /**

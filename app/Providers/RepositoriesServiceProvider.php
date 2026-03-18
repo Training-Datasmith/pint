@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Contracts\PathsRepository;
@@ -16,7 +18,7 @@ class RepositoriesServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+
     }
 
     /**
@@ -34,7 +36,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(PathsRepository::class, fn() => new GitPathsRepository(
+        $this->app->singleton(PathsRepository::class, fn () => new GitPathsRepository(
             Project::path(),
         ));
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 if (true) {
     // ..
 }
@@ -10,15 +12,14 @@ try {
     // ..
 }
 
-$a = function ()
-{
+$a = function () {
     // ..
 };
 
-new class {
+new class () {
     // ..
 };
 
-new class extends stdClass {
+new class () extends stdClass {
     // ..
 };

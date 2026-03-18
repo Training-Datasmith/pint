@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Contracts\PathsRepository;
@@ -20,8 +22,7 @@ class GitPathsRepository implements PathsRepository
          * The project path.
          */
         protected $path
-    )
-    {
+    ) {
     }
 
     /**
@@ -90,7 +91,8 @@ class GitPathsRepository implements PathsRepository
             })
             ->all();
 
-        $files = array_values(array_map(fn(\Symfony\Component\Finder\SplFileInfo $splFile) => $splFile->getPathname(), iterator_to_array(ConfigurationFactory::finder()
+        $files = array_values(array_map(fn (\Symfony\Component\Finder\SplFileInfo $splFile) => $splFile->getPathname(), iterator_to_array(
+            ConfigurationFactory::finder()
             ->in($this->path)
             ->files()
         )));

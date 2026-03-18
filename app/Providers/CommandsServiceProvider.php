@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Actions\ElaborateSummary;
@@ -14,7 +16,7 @@ class CommandsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+
     }
 
     /**
@@ -22,7 +24,7 @@ class CommandsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bindMethod([DefaultCommand::class, 'handle'], fn($command) => $command->handle(
+        $this->app->bindMethod([DefaultCommand::class, 'handle'], fn ($command) => $command->handle(
             resolve(FixCode::class),
             resolve(ElaborateSummary::class)
         ));

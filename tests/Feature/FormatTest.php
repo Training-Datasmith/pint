@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 afterEach(function () {
     putenv('OPENCODE');
     putenv('CLAUDECODE');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use function Illuminate\Filesystem\join_paths;
 
 it('fixes the code', function () {

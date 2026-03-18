@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Output\AgentReporter;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 
 it('returns pass when no changes and no errors', function () {
-    $reporter = new AgentReporter;
+    $reporter = new AgentReporter();
     $summary = new ReportSummary([], 10, 0, 0, false, false, false);
 
     $output = $reporter->generate($summary);
@@ -18,7 +20,7 @@ it('returns pass when no changes and no errors', function () {
 });
 
 it('returns fail when changes exist in dry-run mode', function () {
-    $reporter = new AgentReporter;
+    $reporter = new AgentReporter();
     $summary = new ReportSummary([
         '/project/app/Example.php' => [
             'appliedFixers' => ['binary_operator_spaces'],
@@ -34,7 +36,7 @@ it('returns fail when changes exist in dry-run mode', function () {
 });
 
 it('returns fixed when changes exist in fix mode', function () {
-    $reporter = new AgentReporter;
+    $reporter = new AgentReporter();
     $summary = new ReportSummary([
         '/project/app/Example.php' => [
             'appliedFixers' => ['binary_operator_spaces'],
@@ -50,7 +52,7 @@ it('returns fixed when changes exist in fix mode', function () {
 });
 
 it('returns fail when errors exist', function () {
-    $errorsManager = new ErrorsManager;
+    $errorsManager = new ErrorsManager();
     $errorsManager->report(
         new Error(Error::TYPE_LINT, 'app/Example.php', new Exception('Parse error'))
     );
@@ -67,7 +69,7 @@ it('returns fail when errors exist', function () {
 });
 
 it('includes files with path and fixers', function () {
-    $reporter = new AgentReporter;
+    $reporter = new AgentReporter();
     $summary = new ReportSummary([
         getcwd().'/app/Example.php' => [
             'appliedFixers' => ['binary_operator_spaces', 'no_unused_imports'],
@@ -84,7 +86,7 @@ it('includes files with path and fixers', function () {
 
 it('uses relative paths', function () {
     $cwd = getcwd();
-    $reporter = new AgentReporter;
+    $reporter = new AgentReporter();
     $summary = new ReportSummary([
         $cwd.'/app/Models/User.php' => [
             'appliedFixers' => ['single_quote'],
@@ -104,7 +106,7 @@ it('uses relative paths', function () {
 });
 
 it('outputs valid json', function () {
-    $reporter = new AgentReporter;
+    $reporter = new AgentReporter();
     $summary = new ReportSummary([
         getcwd().'/app/Example.php' => [
             'appliedFixers' => ['binary_operator_spaces'],
@@ -118,7 +120,7 @@ it('outputs valid json', function () {
 });
 
 it('returns format name as agent', function () {
-    $reporter = new AgentReporter;
+    $reporter = new AgentReporter();
 
     expect($reporter->getFormat())->toBe('agent');
 });

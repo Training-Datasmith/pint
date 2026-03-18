@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Actions\ElaborateSummary;
@@ -20,7 +22,7 @@ class ActionsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+
     }
 
     /**
@@ -28,7 +30,7 @@ class ActionsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(FixCode::class, fn() => new FixCode(
+        $this->app->singleton(FixCode::class, fn () => new FixCode(
             resolve(ErrorsManager::class),
             resolve(EventDispatcher::class),
             resolve(InputInterface::class),
@@ -40,7 +42,7 @@ class ActionsServiceProvider extends ServiceProvider
             )
         ));
 
-        $this->app->singleton(ElaborateSummary::class, fn() => new ElaborateSummary(
+        $this->app->singleton(ElaborateSummary::class, fn () => new ElaborateSummary(
             resolve(ErrorsManager::class),
             resolve(InputInterface::class),
             resolve(OutputInterface::class),

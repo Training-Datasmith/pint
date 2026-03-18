@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 beforeEach(function () {
     $this->contents = file_get_contents(base_path('tests/Fixtures/with-fixable-issues/file.php'));
 });
