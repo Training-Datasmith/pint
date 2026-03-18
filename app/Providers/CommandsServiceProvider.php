@@ -11,26 +11,20 @@ class CommandsServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         //
     }
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->bindMethod([DefaultCommand::class, 'handle'], function ($command) {
-            return $command->handle(
-                resolve(FixCode::class),
-                resolve(ElaborateSummary::class)
-            );
-        });
+        $this->app->bindMethod([DefaultCommand::class, 'handle'], fn($command) => $command->handle(
+            resolve(FixCode::class),
+            resolve(ElaborateSummary::class)
+        ));
     }
 }

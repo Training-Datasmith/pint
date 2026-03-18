@@ -39,9 +39,8 @@ class ConfigurationFactory
      * Creates a PHP CS Fixer Configuration with the given array of rules.
      *
      * @param  array<string, array<string, array<int|string, string|int|string[]>|bool|string>|bool>  $rules
-     * @return ConfigInterface
      */
-    public static function preset($rules)
+    public static function preset($rules): \PhpCsFixer\ConfigInterface
     {
         return (new Config)
             ->setParallelConfig(ParallelConfigFactory::detect())

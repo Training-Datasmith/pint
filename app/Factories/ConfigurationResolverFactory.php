@@ -35,7 +35,7 @@ class ConfigurationResolverFactory
      * @param  OutputInterface  $output
      * @return array{ConfigurationResolver, int}
      */
-    public static function fromIO($input, $output)
+    public static function fromIO($input, $output): array
     {
         $path = Project::paths($input);
 
@@ -66,7 +66,7 @@ class ConfigurationResolverFactory
                     md5(
                         app()->isProduction()
                         ? implode('|', $path)
-                        : (string) microtime()
+                        : microtime()
                     ),
                 ]),
                 'stop-on-violation' => $input->getOption('bail'),

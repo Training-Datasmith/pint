@@ -10,27 +10,19 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         //
     }
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->singleton(ErrorsManager::class, function () {
-            return new ErrorsManager;
-        });
+        $this->app->singleton(ErrorsManager::class, fn() => new ErrorsManager);
 
-        $this->app->singleton(EventDispatcher::class, function () {
-            return new EventDispatcher;
-        });
+        $this->app->singleton(EventDispatcher::class, fn() => new EventDispatcher);
     }
 }

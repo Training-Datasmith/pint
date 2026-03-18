@@ -20,7 +20,6 @@ class ConfigurationJsonRepository
      *
      * @param  string|null  $path
      * @param  string|null  $preset
-     * @return void
      */
     public function __construct(protected $path, protected $preset)
     {
@@ -35,7 +34,7 @@ class ConfigurationJsonRepository
     public function finder()
     {
         return collect($this->get())
-            ->filter(fn ($value, $key) => in_array($key, $this->finderOptions))
+            ->filter(fn ($value, $key): bool => in_array($key, $this->finderOptions))
             ->toArray();
     }
 
@@ -83,7 +82,7 @@ class ConfigurationJsonRepository
                 $baseConfig = $this->resolveExtend($baseConfig);
             }
 
-            return tap($baseConfig, function ($configuration) {
+            return tap($baseConfig, function ($configuration): void {
                 if (! is_array($configuration)) {
                     abort(1, sprintf('The configuration file [%s] is not valid JSON.', $this->path));
                 }
@@ -112,9 +111,9 @@ class ConfigurationJsonRepository
      * @param  array<string, array<int, string>|string>  $configuration
      * @return array<string, array<int, string>|string>
      */
-    private function resolveExtend(array $configuration)
+    private function resolveExtend(array $configuration): array
     {
-        $path = realpath(dirname($this->path).DIRECTORY_SEPARATOR.$configuration['extend']);
+        $path = realpath(dirname((string) $this->path).DIRECTORY_SEPARATOR.$configuration['extend']);
 
         $extended = json_decode(file_get_contents($path), true);
 

@@ -55,15 +55,19 @@ class TypeAnnotationsOnlyFixer extends AbstractFixer
 
     /**
      * Determine whether the given tokens are candidates for fixing.
+     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_COMMENT)
-            || $tokens->isTokenKindFound(T_DOC_COMMENT);
+        if ($tokens->isTokenKindFound(T_COMMENT)) {
+            return true;
+        }
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**
      * Apply the fix to the given file.
+     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
      */
     protected function applyFix(SplFileInfo $file, Tokens $tokens): void
     {
@@ -78,6 +82,7 @@ class TypeAnnotationsOnlyFixer extends AbstractFixer
 
     /**
      * Process a single-line or block comment token.
+     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
      */
     private function processComment(Tokens $tokens, int $index): void
     {
@@ -102,6 +107,7 @@ class TypeAnnotationsOnlyFixer extends AbstractFixer
 
     /**
      * Determine whether the comment is the only statement inside a body.
+     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
      */
     private function isBodyPlaceholder(Tokens $tokens, int $index): bool
     {
@@ -116,6 +122,7 @@ class TypeAnnotationsOnlyFixer extends AbstractFixer
 
     /**
      * Process a docblock comment token.
+     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
      */
     private function processDocComment(Tokens $tokens, int $index): void
     {
@@ -166,6 +173,7 @@ class TypeAnnotationsOnlyFixer extends AbstractFixer
 
     /**
      * Clear the token and clean up surrounding whitespace.
+     * @param \PhpCsFixer\Tokenizer\Tokens<\PhpCsFixer\Tokenizer\Token> $tokens
      */
     private function clearAndCleanWhitespace(Tokens $tokens, int $index): void
     {

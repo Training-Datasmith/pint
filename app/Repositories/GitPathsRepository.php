@@ -11,20 +11,17 @@ use Symfony\Component\Process\Process;
 class GitPathsRepository implements PathsRepository
 {
     /**
-     * The project path.
-     *
-     * @var string
-     */
-    protected $path;
-
-    /**
      * Creates a new Paths Repository instance.
      *
      * @param  string  $path
      */
-    public function __construct($path)
+    public function __construct(
+        /**
+         * The project path.
+         */
+        protected $path
+    )
     {
-        $this->path = $path;
     }
 
     /**
@@ -38,9 +35,9 @@ class GitPathsRepository implements PathsRepository
             abort(1, 'The [--dirty] option is only available when using Git.');
         }
 
-        $dirtyFiles = collect(preg_split('/\R+/', $process->getOutput(), flags: PREG_SPLIT_NO_EMPTY))
-            ->mapWithKeys(fn ($file) => [substr($file, 3) => trim(substr($file, 0, 3))])
-            ->reject(fn ($status) => $status === 'D')
+        $dirtyFiles = collect(preg_split('/\R+/', (string) $process->getOutput(), flags: PREG_SPLIT_NO_EMPTY))
+            ->mapWithKeys(fn ($file): array => [substr((string) $file, 3) => trim(substr((string) $file, 0, 3))])
+            ->reject(fn ($status): bool => $status === 'D')
             ->map(fn ($status, $file) => $status === 'R' ? Str::after($file, ' -> ') : $file)
             ->values();
 
@@ -66,11 +63,11 @@ class GitPathsRepository implements PathsRepository
                 code: 1,
                 message: 'The [--diff] option is only available when using Git.',
             ))
-            ->map(fn ($process) => preg_split('/\R+/', $process->getOutput(), flags: PREG_SPLIT_NO_EMPTY))
+            ->map(fn ($process) => preg_split('/\R+/', (string) $process->getOutput(), flags: PREG_SPLIT_NO_EMPTY))
             ->flatten()
             ->unique()
             ->values()
-            ->map(fn ($s) => (string) $s);
+            ->map(fn ($s): string => (string) $s);
 
         return $this->processFileNames($files);
     }
@@ -81,10 +78,10 @@ class GitPathsRepository implements PathsRepository
      * @param  Collection<int, string>  $fileNames
      * @return array<int, string>
      */
-    protected function processFileNames(Collection $fileNames)
+    protected function processFileNames(Collection $fileNames): array
     {
         $processedFileNames = $fileNames
-            ->map(function ($file) {
+            ->map(function ($file): string {
                 if (PHP_OS_FAMILY === 'Windows') {
                     $file = str_replace('/', DIRECTORY_SEPARATOR, $file);
                 }
@@ -93,9 +90,7 @@ class GitPathsRepository implements PathsRepository
             })
             ->all();
 
-        $files = array_values(array_map(function ($splFile) {
-            return $splFile->getPathname();
-        }, iterator_to_array(ConfigurationFactory::finder()
+        $files = array_values(array_map(fn(\Symfony\Component\Finder\SplFileInfo $splFile) => $splFile->getPathname(), iterator_to_array(ConfigurationFactory::finder()
             ->in($this->path)
             ->files()
         )));

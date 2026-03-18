@@ -17,47 +17,39 @@ class ActionsServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         //
     }
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->singleton(FixCode::class, function () {
-            return new FixCode(
-                resolve(ErrorsManager::class),
+        $this->app->singleton(FixCode::class, fn() => new FixCode(
+            resolve(ErrorsManager::class),
+            resolve(EventDispatcher::class),
+            resolve(InputInterface::class),
+            resolve(OutputInterface::class),
+            new ProgressOutput(
                 resolve(EventDispatcher::class),
                 resolve(InputInterface::class),
                 resolve(OutputInterface::class),
-                new ProgressOutput(
-                    resolve(EventDispatcher::class),
-                    resolve(InputInterface::class),
-                    resolve(OutputInterface::class),
-                )
-            );
-        });
+            )
+        ));
 
-        $this->app->singleton(ElaborateSummary::class, function () {
-            return new ElaborateSummary(
+        $this->app->singleton(ElaborateSummary::class, fn() => new ElaborateSummary(
+            resolve(ErrorsManager::class),
+            resolve(InputInterface::class),
+            resolve(OutputInterface::class),
+            new SummaryOutput(
+                resolve(ConfigurationJsonRepository::class),
                 resolve(ErrorsManager::class),
                 resolve(InputInterface::class),
                 resolve(OutputInterface::class),
-                new SummaryOutput(
-                    resolve(ConfigurationJsonRepository::class),
-                    resolve(ErrorsManager::class),
-                    resolve(InputInterface::class),
-                    resolve(OutputInterface::class),
-                )
-            );
-        });
+            )
+        ));
     }
 }

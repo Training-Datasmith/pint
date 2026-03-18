@@ -24,7 +24,6 @@ class FixCode
      * @param  InputInterface  $input
      * @param  OutputInterface  $output
      * @param  ProgressOutput  $progress
-     * @return void
      */
     public function __construct(
         protected $errors,
@@ -56,7 +55,7 @@ class FixCode
         $method = $this->input->getOption('parallel') ? 'fixParallel' : 'fixSequential';
 
         /** @var array<string, array{appliedFixers: array<int, string>, diff: string}> $changes */
-        $changes = (fn () => $this->{$method}())->call(new Runner(
+        $changes = (fn (): array => $this->{$method}())->call(new Runner(
             $resolver->getFinder(),
             $resolver->getFixers(),
             $resolver->getDiffer(),

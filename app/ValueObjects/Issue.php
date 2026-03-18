@@ -27,10 +27,8 @@ class Issue
 
     /**
      * Returns the file where the change occur.
-     *
-     * @return string
      */
-    public function file()
+    public function file(): string
     {
         return str_replace($this->path.DIRECTORY_SEPARATOR, '', $this->file);
     }
@@ -47,17 +45,13 @@ class Issue
             return $this->payload['source']->getMessage();
         }
 
-        return collect($this->payload['appliedFixers'])->map(function ($appliedFixer) {
-            return $appliedFixer;
-        })->implode(', ');
+        return collect($this->payload['appliedFixers'])->map(fn($appliedFixer) => $appliedFixer)->implode(', ');
     }
 
     /**
      * If the issue can be fixed.
-     *
-     * @return bool
      */
-    public function fixable()
+    public function fixable(): bool
     {
         return ! empty($this->payload['appliedFixers']);
     }
@@ -105,10 +99,11 @@ class Issue
 
             $diff = str($diff)
                 ->explode("\n")
-                ->map(function ($line) {
+                ->map(function (string $line): string {
                     if (Str::startsWith($line, '+')) {
                         return '//+<fg=green>'.$line.'</>';
-                    } elseif (Str::startsWith($line, '-')) {
+                    }
+                    if (Str::startsWith($line, '-')) {
                         return '//-<fg=red>'.$line.'</>';
                     }
 

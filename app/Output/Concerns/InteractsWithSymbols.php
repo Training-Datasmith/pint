@@ -34,9 +34,8 @@ trait InteractsWithSymbols
      * Gets the symbol for the given status.
      *
      * @param  int  $status
-     * @return string
      */
-    public function getSymbol($status)
+    public function getSymbol($status): string
     {
         $statusSymbol = $this->statuses[$status];
 

@@ -40,7 +40,6 @@ class SummaryOutput
      * @param  ErrorsManager  $errors
      * @param  InputInterface  $input
      * @param  OutputInterface  $output
-     * @return void
      */
     public function __construct(
         protected $config,
@@ -56,9 +55,8 @@ class SummaryOutput
      *
      * @param  ReportSummary  $summary
      * @param  int  $totalFiles
-     * @return void
      */
-    public function handle($summary, $totalFiles)
+    public function handle($summary, $totalFiles): void
     {
         renderUsing($this->output);
 
@@ -100,7 +98,7 @@ class SummaryOutput
     public function getIssues($path, $summary)
     {
         $issues = collect($summary->getChanged())
-            ->map(fn ($information, $file) => new Issue(
+            ->map(fn ($information, $file): \App\ValueObjects\Issue => new Issue(
                 $path,
                 $file,
                 $this->getSymbol(FileProcessed::STATUS_FIXED),
@@ -113,7 +111,7 @@ class SummaryOutput
                 $this->errors->getInvalidErrors()
                 + $this->errors->getExceptionErrors()
                 + $this->errors->getLintErrors()
-            )->map(fn ($error) => new Issue(
+            )->map(fn ($error): \App\ValueObjects\Issue => new Issue(
                 $path,
                 $error->getFilePath(),
                 $this->getSymbolFromErrorType($error->getType()),
@@ -121,8 +119,6 @@ class SummaryOutput
                     'source' => $error->getSource(),
                 ],
             )),
-        )->sort(function ($issueA, $issueB) {
-            return $issueA <=> $issueB;
-        })->values();
+        )->sort(fn($issueA, $issueB) => $issueA <=> $issueB)->values();
     }
 }

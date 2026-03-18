@@ -22,10 +22,8 @@ class ProgressOutput
 
     /**
      * Holds the number of symbols on the current terminal line.
-     *
-     * @var int
      */
-    protected $symbolsPerLine = 0;
+    protected int $symbolsPerLine;
 
     /**
      * Creates a new Progress Output instance.
@@ -33,7 +31,6 @@ class ProgressOutput
      * @param  EventDispatcherInterface  $dispatcher
      * @param  InputInterface  $input
      * @param  OutputInterface  $output
-     * @return void
      */
     public function __construct(
         protected $dispatcher,
@@ -45,31 +42,26 @@ class ProgressOutput
 
     /**
      * Subscribes for file processed events.
-     *
-     * @return void
      */
-    public function subscribe()
+    public function subscribe(): void
     {
-        $this->dispatcher->addListener(FileProcessed::NAME, [$this, 'handle']);
+        $this->dispatcher->addListener(FileProcessed::NAME, $this->handle(...));
     }
 
     /**
      * Stops the file processed event subscription.
-     *
-     * @return void
      */
-    public function unsubscribe()
+    public function unsubscribe(): void
     {
-        $this->dispatcher->removeListener(FileProcessed::NAME, [$this, 'handle']);
+        $this->dispatcher->removeListener(FileProcessed::NAME, $this->handle(...));
     }
 
     /**
      * Handle the given processed file event.
      *
      * @param  FileProcessed  $event
-     * @return void
      */
-    public function handle($event)
+    public function handle($event): void
     {
         $symbolsOnCurrentLine = $this->processed % $this->symbolsPerLine;
 

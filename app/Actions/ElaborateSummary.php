@@ -21,7 +21,6 @@ class ElaborateSummary
      * @param  InputInterface  $input
      * @param  OutputInterface  $output
      * @param  SummaryOutput  $summaryOutput
-     * @return void
      */
     public function __construct(
         protected $errors,

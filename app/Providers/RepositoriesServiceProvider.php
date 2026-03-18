@@ -13,22 +13,18 @@ class RepositoriesServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         //
     }
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->singleton(ConfigurationJsonRepository::class, function () {
+        $this->app->singleton(ConfigurationJsonRepository::class, function (): \App\Repositories\ConfigurationJsonRepository {
             $input = resolve(InputInterface::class);
             $config = $input->getOption('config') ?: Project::path().'/pint.json';
 
@@ -38,10 +34,8 @@ class RepositoriesServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(PathsRepository::class, function () {
-            return new GitPathsRepository(
-                Project::path(),
-            );
-        });
+        $this->app->singleton(PathsRepository::class, fn() => new GitPathsRepository(
+            Project::path(),
+        ));
     }
 }
