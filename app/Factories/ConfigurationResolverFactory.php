@@ -45,7 +45,7 @@ class ConfigurationResolverFactory
 
         $preset = $localConfiguration->preset();
 
-        if (! in_array($preset, static::$presets)) {
+        if (! in_array($preset, static::$presets, true)) {
             abort(1, 'Preset not found.');
         }
 

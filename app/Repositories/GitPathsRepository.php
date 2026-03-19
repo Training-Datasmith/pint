@@ -50,6 +50,10 @@ class GitPathsRepository implements PathsRepository
      */
     public function diff($branch)
     {
+        if (! preg_match('/^[A-Za-z0-9\/_.\-]+$/', (string) $branch)) {
+            abort(1, 'The [--diff] branch name contains invalid characters.');
+        }
+
         $files = [
             'committed' => tap(new Process(['git', 'diff', '--name-only', '--diff-filter=AM', "{$branch}...HEAD", '--', '**.php']))->run(),
             'staged' => tap(new Process(['git', 'diff', '--name-only', '--diff-filter=AM', '--cached', '--', '**.php']))->run(),

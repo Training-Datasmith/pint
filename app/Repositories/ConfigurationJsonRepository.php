@@ -95,16 +95,17 @@ class ConfigurationJsonRepository
     }
 
     /**
-     * Determine if a local or remote file exists.
+     * Determine if a local file exists.
      *
      * @return bool
      */
     protected function fileExists(string $path)
     {
-        return match (true) {
-            str_starts_with($path, 'http://') || str_starts_with($path, 'https://') => str_contains(get_headers($path)[0], '200 OK'),
-            default => file_exists($path)
-        };
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            abort(1, 'Remote configuration files are not supported. The [path] option must be a local file path.');
+        }
+
+        return file_exists($path);
     }
 
     /**
@@ -115,7 +116,22 @@ class ConfigurationJsonRepository
      */
     private function resolveExtend(array $configuration): array
     {
-        $path = realpath(dirname((string) $this->path).DIRECTORY_SEPARATOR.$configuration['extend']);
+        $extend = (string) $configuration['extend'];
+
+        if (str_starts_with($extend, 'http://') || str_starts_with($extend, 'https://')) {
+            abort(1, 'The [extend] configuration key does not support remote URLs.');
+        }
+
+        $configDir = dirname((string) $this->path);
+        $path = realpath($configDir.DIRECTORY_SEPARATOR.$extend);
+
+        if ($path === false) {
+            abort(1, sprintf('The configuration file to extend [%s] does not exist.', $extend));
+        }
+
+        if (! str_starts_with($path, realpath($configDir).DIRECTORY_SEPARATOR) && $path !== realpath($configDir)) {
+            abort(1, sprintf('The configuration file to extend [%s] must be within the same directory as the Pint configuration.', $extend));
+        }
 
         $extended = json_decode(file_get_contents($path), true);
 
