@@ -21,18 +21,18 @@ class FixCode
     /**
      * Creates a new Fix Code instance.
      *
-     * @param  ErrorsManager  $errors
-     * @param  EventDispatcher  $events
-     * @param  InputInterface  $input
-     * @param  OutputInterface  $output
-     * @param  ProgressOutput  $progress
+     * @param  ErrorsManager  $errors    PHP-CS-Fixer error collector for reporting fixer failures
+     * @param  EventDispatcher  $events  Symfony event dispatcher for PHP-CS-Fixer runner lifecycle events
+     * @param  InputInterface  $input    CLI input containing target paths and options (--parallel, --format, etc.)
+     * @param  OutputInterface  $output  CLI output interface for progress and result rendering
+     * @param  ProgressOutput  $progress  Pint's event-driven real-time progress display subscriber
      */
     public function __construct(
-        protected $errors,
-        protected $events,
-        protected $input,
-        protected $output,
-        protected $progress,
+        protected ErrorsManager $errors,
+        protected EventDispatcher $events,
+        protected InputInterface $input,
+        protected OutputInterface $output,
+        protected ProgressOutput $progress,
     ) {
 
     }
@@ -40,9 +40,14 @@ class FixCode
     /**
      * Fixes the project resolved by the current input and output.
      *
+     * Builds a PHP-CS-Fixer ConfigurationResolver from CLI input and pint.json, subscribes
+     * the progress output (unless running in agent/format mode), runs the fixer either
+     * sequentially or in parallel based on the --parallel flag, and returns the result.
+     *
      * @return array{int, array<string, array{appliedFixers: array<int, string>, diff: string}>}
+     *         A tuple of [exitCode, changesMap] where changesMap maps file paths to applied fixers and diffs
      */
-    public function execute()
+    public function execute(): array
     {
         try {
             [$resolver, $totalFiles] = ConfigurationResolverFactory::fromIO($this->input, $this->output);
